@@ -1,0 +1,33 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+
+# VS Code settings (если вы используете Visual Studio Code)
+.vscode/
+
+# PyCharm settings (если используете PyCharm)
+.idea/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# лог-файлы
+*.log
+
+# Файлы, созданные операционной системой
+.DS_Store
+Thumbs.db
+
+# Требования для пакетов
+*.tar.gz
+*.zip
+
+# Игнорировать другие артефакты, которые могут быть созданы во время разработки или тестирования
+*.egg-info/
+dist/
+build/
