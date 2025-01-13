@@ -1,6 +1,6 @@
 import numpy as np
 import face_recognition
-
+import face_recognition_models
 
 class FaceRecognizer:
     def __init__(self, database, threshold=0.6):
