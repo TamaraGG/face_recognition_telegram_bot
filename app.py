@@ -1,7 +1,7 @@
 import os
 import logging
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 from PIL import Image  # Для проверки формата файла
 from face_recognizer import FaceRecognizer
 from db import FaceDatabase
@@ -36,11 +36,40 @@ def is_jpg_file(file_path):
         logger.error(f"Ошибка при проверке формата файла {file_path}: {e}")
         return False
  
+# Функция для отображения начального меню
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработчик команды /start."""
-    await update.message.reply_text(
-        "Привет! Я бот для распознавания лиц. Отправьте мне фото, и я попробую его обработать!"
-    )
+    """Отправляет меню с выбором действий при запуске бота."""
+    # Создаем кнопки
+    keyboard = [
+        [
+            InlineKeyboardButton("🗑️ Очистить данные", callback_data='clear_database'),
+            InlineKeyboardButton("🤖 Распознать человека", callback_data='recognize_person')
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+ 
+    # Отправляем сообщение с кнопками
+    await update.message.reply_text("Выберите действие:", reply_markup=reply_markup)
+ 
+ 
+# Обработчик нажатий на кнопки
+async def handle_menu_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обрабатывает выбор пользователя из меню."""
+    query = update.callback_query
+    await query.answer()
+ 
+    if query.data == 'clear_database':
+        try:
+            # Вызов функции очистки базы данных
+            database.clear_database()  # Используем объект database из FaceDatabase
+            await query.edit_message_text("✅ База данных успешно очищена.")
+        except Exception as e:
+            logger.error(f"Ошибка при очистке базы данных: {e}")
+            await query.edit_message_text(f"❌ Ошибка при очистке базы данных: {e}")
+    elif query.data == 'recognize_person':
+        await query.edit_message_text("Пожалуйста, отправьте фотографию для распознавания.")
+    else:
+        await query.edit_message_text("❌ Неизвестное действие.")
  
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик документов (файлов)."""
@@ -109,7 +138,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
         # Обработка изображения (пример работы с FaceRecognizer)
         result = face_recognizer.recognize_and_update(file_path)
-        
+ 
         # Отправляем результат пользователю
         if isinstance(result, str):
             # Разбираем строку на ключи и значения
@@ -134,9 +163,11 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
 if __name__ == "__main__":
     application = ApplicationBuilder().token("8022943494:AAFrnUb3JIdNaKeML2bMk5HbgfG8MyjvwCw").build()
- 
+    
     # Обработчики команд
     application.add_handler(CommandHandler("start", start))
+ 
+    application.add_handler(CallbackQueryHandler(handle_menu_choice))
  
     # Обработчики сообщений
     application.add_handler(MessageHandler(filters.Document.ALL, handle_document))  # Для файлов
@@ -144,4 +175,3 @@ if __name__ == "__main__":
  
     # Запуск бота
     application.run_polling()
- 
