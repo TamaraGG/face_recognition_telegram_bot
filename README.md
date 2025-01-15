@@ -14,11 +14,11 @@
    python -m venv venv
    ```
 2. Активируйте виртуальное окружение:
-Для Windows:
+   Для Windows:
    ```bash
    venv\Scripts\activate
    ```
-Для macOS/Linux:
+   Для macOS/Linux:
    ```bash
    source venv/bin/activate
    ```
@@ -57,7 +57,7 @@
    ```
 3. Запуск приложения
 Для запуска проекта просто выполните основной скрипт:
-```bash
-python main.py
-```
+   ```bash
+   python main.py
+   ```
 Замените main.py на имя вашего основного файла, если оно отличается.
