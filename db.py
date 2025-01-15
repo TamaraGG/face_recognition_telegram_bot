@@ -104,12 +104,11 @@ class Embedding(Base):
     embedding_hash = Column(BIGINT, unique=True, nullable=False)
     person = relationship("Person", back_populates="embeddings")
 
+
 class FaceDatabase(IDatabase):
     def __init__(self, database_url, cache_manager):
         """
         Инициализация базы данных и системы кэширования.
-        :param database_url: URL для подключения к базе данных.
-        :param cache_manager: объект CacheManager для управления кэшированием.
         """
         try:
             self.engine = create_engine(database_url)
@@ -247,6 +246,9 @@ class FaceDatabase(IDatabase):
             raise Exception(f"Ошибка при увеличении счётчика появления человека с ID {person_id}: {str(e)}")
 
     def get_appearance_count(self, person_id):
+        """
+        Возвращает количество появлений человека по id.
+        """
         try:
             with self.Session() as session:
                 person = session.query(Person).filter_by(id=person_id).first()
@@ -257,6 +259,9 @@ class FaceDatabase(IDatabase):
             raise Exception(f"Ошибка при получении количества появлений человека с ID {person_id}: {str(e)}")
 
     def clear_database(self):
+        """
+        Очищает базу данных.
+        """
         try:
             with self.Session() as session:
                 session.query(Embedding).delete()
