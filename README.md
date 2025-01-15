@@ -20,8 +20,7 @@
    ```bash
    source venv/bin/activate
    ```
-4. Установите зависимости:
-Они находятся в файле requirements.txt, установите зависимости с помощью команды:
+4. Установите зависимости. Они находятся в файле requirements.txt, установите их с помощью команды:
    ```bash
    pip install -r requirements.txt
    ```
