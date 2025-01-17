@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
  
 # Создание объекта базы данных
-DATABASE_PATH = "postgresql://postgres:qUarfUKXDGravsZpXwJGbCWbONgEiGDu@junction.proxy.rlwy.net:57957/railway"
+DATABASE_PATH = ""
 cachemanager = CacheManager()
 database = FaceDatabase(DATABASE_PATH, cachemanager)
  
