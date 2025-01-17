@@ -4,7 +4,7 @@ from face_recognizer import FaceRecognizer
 
 
 # URL для подключения к PostgreSQL (замените данные на свои)
-DATABASE_URL = "postgresql://postgres:qUarfUKXDGravsZpXwJGbCWbONgEiGDu@junction.proxy.rlwy.net:57957/railway"
+DATABASE_URL = ""
 
 # Пример использования
 database = FaceDatabase(DATABASE_URL)
