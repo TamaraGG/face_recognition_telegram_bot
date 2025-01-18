@@ -7,7 +7,15 @@ from face_recognizer import FaceRecognizer
 from db import FaceDatabase
 from db import CacheManager
 import logging
- 
+from dotenv import load_dotenv
+
+# Загрузка переменных из .env файла
+load_dotenv()
+
+# Получение значений из переменных окружения
+TOKEN = os.getenv("TOKEN")
+DATABASE_PATH = os.getenv("DATABASE_PATH")
+
 # Настройка логирования
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -16,7 +24,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
  
 # Создание объекта базы данных
-DATABASE_PATH = ""
 cachemanager = CacheManager()
 database = FaceDatabase(DATABASE_PATH, cachemanager)
  
@@ -162,7 +169,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Произошла ошибка при обработке фотографии.")
  
 if __name__ == "__main__":
-    application = ApplicationBuilder().token("8022943494:AAFrnUb3JIdNaKeML2bMk5HbgfG8MyjvwCw").build()
+    application = ApplicationBuilder().token(TOKEN).build()
     
     # Обработчики команд
     application.add_handler(CommandHandler("start", start))
